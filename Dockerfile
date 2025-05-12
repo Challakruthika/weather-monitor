@@ -1,23 +1,20 @@
-# 1. Use the official Node.js image
+# 1. Use official Node image
 FROM node:18
 
 # 2. Set working directory
 WORKDIR /app
 
-# 3. Copy package.json and lock files first (for caching)
+# 3. Copy package files and install dependencies
 COPY package*.json ./
-
-# 4. Install dependencies
 RUN npm install
 
-# 5. Copy the rest of your app
+# 4. Copy rest of the files
 COPY . .
 
-# 6. Build the app
+# 5. Build the SvelteKit app
 RUN npm run build
 
-# 7. Expose the preview port
-EXPOSE 4173
+# 6. Expose the port and run
+EXPOSE 3000
+CMD ["node", "build"]
 
-# 8. Start the preview server (in production mode)
-CMD ["npm", "run", "preview", "--", "--host"]
